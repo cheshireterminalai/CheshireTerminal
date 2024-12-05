@@ -1,0 +1,31 @@
+Input:
+
+function fibonacci(n) {
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+
+Output:
+The provided JavaScript code calculates the nth number in the Fibonacci sequence using recursion. However, this recursive approach has an exponential time complexity due to the repeated calculations of the same subproblems.
+
+To improve the efficiency of the code, we can use an iterative approach with a bottom-up dynamic programming technique. This approach has a linear time complexity.
+
+Here's the improved version of the code:
+
+```javascript
+function fibonacci(n) {
+    if (n <= 1) return n;
+
+    let fib = [0, 1];
+    for (let i = 2; i <= n; i++) {
+        fib[i] = fib[i - 1] + fib[i - 2];
+    }
+
+    return fib[n];
+}
+```
+
+In the improved version, we initialize an array `fib` with the base cases `0` and `1`. Then, we iterate from `2` to `n` and calculate each Fibonacci number by summing up the previous two numbers. Finally, we return the nth Fibonacci number from the `fib` array.
+
+This approach avoids the repeated calculations of the same subproblems, resulting in improved efficiency.

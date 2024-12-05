@@ -1,0 +1,436 @@
+:root {
+    --primary-color: #00ff00;
+    --text-color: #00ff00;
+    --border-color: #00ff00;
+    --bg-color: #000000;
+    --warning-color: #ffff00;
+    --error-color: #ff0000;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New', monospace;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.matrix-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.15;
+}
+
+.header-image-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 20px auto;
+}
+
+.circle-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    box-shadow: 0 0 20px var(--primary-color);
+    animation: pulse 2s infinite;
+}
+
+.header-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.terminal {
+    width: 90%;
+    max-width: 1000px;
+    margin: 20px auto;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+}
+
+.terminal-header {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+
+.status {
+    color: var(--text-color);
+    margin-bottom: 20px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+}
+
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+}
+
+/* Mode Toggle Switch */
+.mode-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--border-color);
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 3px;
+    background-color: var(--primary-color);
+    transition: .4s;
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+input:checked + .slider {
+    background-color: rgba(0, 255, 0, 0.2);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Validator Button */
+.glow-button {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 1px;
+}
+
+.glow-button:hover {
+    background: rgba(0, 255, 0, 0.1);
+    box-shadow: 0 0 20px var(--primary-color);
+}
+
+.glow-button:active {
+    transform: scale(0.98);
+}
+
+.glow-button.running {
+    background: rgba(0, 255, 0, 0.2);
+    animation: pulse 2s infinite;
+}
+
+/* Validator Status */
+.validator-status {
+    margin-top: 10px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 3px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(0, 255, 0, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.progress {
+    width: 0%;
+    height: 100%;
+    background: var(--primary-color);
+    box-shadow: 0 0 10px var(--primary-color);
+    animation: progress 30s linear;
+}
+
+.status-text {
+    font-size: 0.9em;
+    color: var(--text-color);
+}
+
+.menu {
+    margin-bottom: 20px;
+}
+
+.menu-item {
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-item:hover {
+    background: rgba(0, 255, 0, 0.1);
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+.form-container {
+    display: none;
+    margin: 20px 0;
+}
+
+.form-field {
+    margin: 10px 0;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.chat-container, .coding-container, .analysis-container, .contract-container, .token-analysis-container {
+    display: none;
+    margin: 20px 0;
+}
+
+.chat-messages {
+    height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    margin-bottom: 10px;
+}
+
+.chat-input {
+    display: flex;
+    gap: 10px;
+}
+
+.system-message {
+    color: var(--primary-color);
+    font-style: italic;
+    margin: 5px 0;
+}
+
+.user-message {
+    color: white;
+    margin: 5px 0;
+}
+
+.bot-message {
+    color: var(--primary-color);
+    margin: 5px 0;
+}
+
+.output {
+    min-height: 100px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    margin: 20px 0;
+    white-space: pre-wrap;
+}
+
+.command-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+}
+
+.prompt {
+    color: var(--primary-color);
+}
+
+.code-block {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    white-space: pre-wrap;
+    margin: 10px 0;
+}
+
+.chart-analysis-container {
+    display: none;
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+.upload-area {
+    border: 2px dashed var(--border-color);
+    border-radius: 5px;
+    padding: 40px;
+    text-align: center;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.7);
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.upload-area.dragover {
+    border-color: var(--primary-color);
+    background: rgba(0, 255, 0, 0.1);
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+.upload-prompt {
+    color: var(--text-color);
+    font-size: 1.2em;
+}
+
+.upload-prompt:hover {
+    color: var(--primary-color);
+}
+
+.uploaded-image {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.uploaded-image img {
+    max-width: 100%;
+    max-height: 400px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.uploaded-image button {
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.uploaded-image button:hover {
+    background: rgba(0, 255, 0, 0.1);
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+.analysis-section {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.analysis-text {
+    white-space: pre-wrap;
+    line-height: 1.5;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    color: var(--text-color);
+    font-family: 'Courier New', monospace;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+    outline: none;
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+button {
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: rgba(0, 255, 0, 0.1);
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+.footer-image {
+    max-width: 200px;
+    margin: 20px auto;
+    border-radius: 10px;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 5px var(--primary-color);
+    }
+    50% {
+        box-shadow: 0 0 20px var(--primary-color);
+    }
+    100% {
+        box-shadow: 0 0 5px var(--primary-color);
+    }
+}
+
+@keyframes progress {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 100%;
+    }
+}

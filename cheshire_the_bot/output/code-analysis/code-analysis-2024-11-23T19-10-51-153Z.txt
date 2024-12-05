@@ -1,0 +1,64 @@
+Input:
+
+function fibonacci(n) {
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+
+Output:
+**Code Analysis**
+
+The provided JavaScript function calculates the `n`-th Fibonacci number using a recursive approach. Here's a breakdown of the code:
+
+### Patterns and Issues:
+
+1. **Recursive Function Call**: The function calls itself recursively without any optimization or memoization, leading to:
+	* Increased memory usage due to repeated function calls.
+	* Potential stack overflow errors for large values of `n`.
+2. **Lack of Memoization**: The function recalculates the same Fibonacci numbers multiple times, wasting computational resources.
+3. **Inefficient Algorithm**: The recursive approach has a time complexity of O(2^n), which is extremely inefficient for large values of `n`.
+
+### Suggestions and Improvements:
+
+1. **Use Memoization**: Store previously calculated Fibonacci numbers in an object to avoid redundant calculations.
+	* Create a memoization object (`fibMemo`) with initial values for `n = 0` and `n = 1`.
+2. **Optimize Recursive Function Call**: Instead of calling the function twice, use a single recursive call with an optimization technique (e.g., using a loop or dynamic programming).
+3. **Use Dynamic Programming**: Convert the recursive approach to a iterative solution using a loop, which reduces memory usage and improves performance.
+
+**Refactored Code:**
+
+```javascript
+function fibonacci(n) {
+    const fibMemo = { 0: 0, 1: 1 };
+
+    function fibRecursive(k) {
+        if (k in fibMemo) return fibMemo[k];
+        fibMemo[k] = fibRecursive(k - 1) + fibRecursive(k - 2);
+        return fibMemo[k];
+    }
+
+    return fibRecursive(n);
+}
+
+// Alternative iterative solution:
+function fibonacciIterative(n) {
+    let a = 0, b = 1;
+    for (let i = 3; i <= n; i++) {
+        [a, b] = [b, a + b];
+    }
+    return a;
+}
+```
+
+**Example Use Cases:**
+
+```javascript
+console.log(fibonacci(5)); // Output: 5
+console.log(fibonacciIterative(5)); // Output: 5
+
+console.log(fibonacci(10)); // Output: 55
+console.log(fibonacciIterative(10)); // Output: 55
+```
+
+By applying memoization and optimizing the recursive function call, we significantly improve the performance and scalability of the Fibonacci calculation.

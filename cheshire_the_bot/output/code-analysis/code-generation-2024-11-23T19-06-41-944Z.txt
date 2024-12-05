@@ -1,0 +1,7 @@
+Input:
+Complete a function definition
+Prefix: def f(
+Suffix: return a + b
+
+Output:
+a, b):

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheshire Terminal Autonomous Ai Art Engine NFT Minting Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8">Cheshire Terminal Autonomous Ai Art Engine NFT Minting Dashboard</h1>
+        <h2 class="text-1xl font-bold mb-8">Powered by $Grin Token on Solana</h2>
+
+        <!-- Status Panel -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-bold mb-4">Generation Status</h2>
+            <div class="space-y-4">
+                <div>
+                    <p>Progress: <span id="progress">0/69</span></p>
+                    <div class="w-full bg-gray-700 rounded-full h-2.5 mt-2">
+                        <div id="progressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div>
+                    <p>Wallet Balance: <span id="balance">Loading...</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-bold mb-4">Controls</h2>
+            <div class="flex gap-4">
+                <button id="startBtn" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded">
+                    Start Generation
+                </button>
+                <button id="stopBtn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded" disabled>
+                    Stop Generation
+                </button>
+                <button id="refreshBtn" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">
+                    Refresh Status
+                </button>
+            </div>
+        </div>
+
+        <!-- Collection Preview -->
+        <div class="bg-gray-800 rounded-lg p-6">
+            <h2 class="text-xl font-bold mb-4">Generated NFTs</h2>
+            <div id="nftGrid" class="grid grid-cols-3 gap-4">
+                <!-- NFTs will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3001/api';
+        let isGenerating = false;
+
+        // UI Elements
+        const progressElement = document.getElementById('progress');
+        const progressBar = document.getElementById('progressBar');
+        const balanceElement = document.getElementById('balance');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const nftGrid = document.getElementById('nftGrid');
+
+        // Update UI with current status
+        async function updateStatus() {
+            try {
+                const response = await fetch(`${API_URL}/collection/status`);
+                const data = await response.json();
+                
+                isGenerating = data.isGenerating;
+                const progress = data.progress;
+                
+                progressElement.textContent = `${progress.current}/${progress.total}`;
+                progressBar.style.width = `${progress.percentage}%`;
+                
+                startBtn.disabled = isGenerating;
+                stopBtn.disabled = !isGenerating;
+
+                // Update NFT grid
+                updateNFTGrid(data.collection);
+            } catch (error) {
+                console.error('Failed to update status:', error);
+            }
+        }
+
+        // Update wallet balance
+        async function updateBalance() {
+            try {
+                const response = await fetch(`${API_URL}/wallet/balance`);
+                const data = await response.json();
+                balanceElement.textContent = `${data.balance.toFixed(4)} SOL`;
+            } catch (error) {
+                console.error('Failed to update balance:', error);
+            }
+        }
+
+        // Update NFT grid
+        function updateNFTGrid(collection) {
+            nftGrid.innerHTML = collection.map(nft => `
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <img src="${nft.image}" alt="${nft.name}" class="w-full h-48 object-cover rounded mb-2">
+                    <h3 class="font-bold">${nft.name}</h3>
+                    <p class="text-sm text-gray-400">${nft.attributes.map(attr => 
+                        `${attr.trait_type}: ${attr.value}`
+                    ).join(', ')}</p>
+                    <a href="${nft.transactionUrl}" target="_blank" class="text-blue-400 hover:text-blue-300 text-sm">
+                        View on Explorer
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        // Start generation
+        async function startGeneration() {
+            try {
+                const response = await fetch(`${API_URL}/collection/generate`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                console.log('Generation started:', data);
+                updateStatus();
+            } catch (error) {
+                console.error('Failed to start generation:', error);
+            }
+        }
+
+        // Stop generation
+        async function stopGeneration() {
+            try {
+                const response = await fetch(`${API_URL}/collection/stop`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                console.log('Generation stopped:', data);
+                updateStatus();
+            } catch (error) {
+                console.error('Failed to stop generation:', error);
+            }
+        }
+
+        // Event listeners
+        startBtn.addEventListener('click', startGeneration);
+        stopBtn.addEventListener('click', stopGeneration);
+        refreshBtn.addEventListener('click', () => {
+            updateStatus();
+            updateBalance();
+        });
+
+        // Initial update
+        updateStatus();
+        updateBalance();
+
+        // Poll for updates every 5 seconds while generating
+        setInterval(() => {
+            if (isGenerating) {
+                updateStatus();
+                updateBalance();
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

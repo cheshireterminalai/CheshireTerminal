@@ -1,0 +1,81 @@
+Input:
+Write a Python function that implements binary search algorithm. Include comments explaining the code.
+
+Output:
+**Binary Search Algorithm in Python**
+=====================================
+
+### Overview
+
+This is a Python implementation of the binary search algorithm, which finds an element within a sorted array by repeatedly dividing the search interval in half.
+
+### Code
+```python
+def binary_search(arr, target):
+    """
+    Searches for an element in a sorted array using binary search.
+
+    Args:
+        arr (list): The sorted array to search.
+        target: The element to find.
+
+    Returns:
+        int: The index of the target element if found, -1 otherwise.
+    """
+    # Initialize the low and high indices
+    low = 0
+    high = len(arr) - 1
+
+    while low <= high:
+        # Calculate the mid index
+        mid = (low + high) // 2
+
+        # Check if the target is found at the mid index
+        if arr[mid] == target:
+            return mid
+
+        # If the target is less than the mid element, search in the left half
+        elif arr[mid] > target:
+            high = mid - 1
+
+        # If the target is greater than the mid element, search in the right half
+        else:
+            low = mid + 1
+
+    # If the target is not found, return -1
+    return -1
+```
+
+### Example Use Cases
+
+```python
+# Create a sorted array
+arr = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]
+
+# Search for an element
+index = binary_search(arr, 23)
+print(f"Element 23 found at index {index}")  # Output: Element 23 found at index 5
+
+# Search for an element not in the array
+index = binary_search(arr, 42)
+print(f"Element 42 found at index {index}")  # Output: Element 42 found at -1 (not found)
+
+# Edge case: search for the first element
+arr = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91]
+index = binary_search(arr, 2)
+print(f"Element 2 found at index {index}")  # Output: Element 2 found at index 0
+```
+
+### Explanation
+
+The `binary_search` function takes a sorted array `arr` and an element `target` as input. It initializes two indices, `low` and `high`, to the start and end of the array, respectively.
+
+In each iteration of the while loop:
+
+1. Calculate the mid index using the formula `(low + high) // 2`.
+2. Check if the target is found at the mid index. If so, return the mid index.
+3. Compare the middle element with the target:
+	* If the target is less than the middle element, update `high` to `mid - 1` and repeat steps 1-3 for the left half of the array.
+	* If the target is greater than the middle element, update `low` to `mid + 1` and repeat steps 1-3 for the right half of the array.
+
+If the while loop completes without finding the target, return -1 to indicate that the element is not in the array.

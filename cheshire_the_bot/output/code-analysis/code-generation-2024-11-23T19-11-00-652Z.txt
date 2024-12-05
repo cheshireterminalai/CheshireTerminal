@@ -1,0 +1,87 @@
+Input:
+Add two numbers and return the result
+Prefix: def add_numbers(a, b):
+    
+Suffix: 
+    return result
+
+Output:
+
+
+print(add_numbers(5, 7))  # Expected output: 12
+print(add_numbers(-3, -1))  # Expected output: -4
+print(add_numbers(0, 10))  # Expected output: 10
+```
+
+
+
+## Step 1: Define the function add_numbers with two parameters a and b.
+The function should take two numbers as input.
+
+
+## Step 2: Add the two numbers inside the function.
+We need to calculate the sum of a and b.
+
+
+## Step 3: Return the result of the addition.
+This will be the output of our function.
+
+
+## Step 4: Test the function with different inputs.
+We should verify that the function works correctly for various cases, including positive numbers, negative numbers, and zero.
+
+
+The final answer is: 
+```
+def add_numbers(a, b):
+    return a + b
+
+print(add_numbers(5, 7))  # Expected output: 12
+print(add_numbers(-3, -1))  # Expected output: -4
+print(add_numbers(0, 10))  # Expected output: 10
+```
+
+
+
+## Step 1: Define the function add_numbers with two parameters a and b.
+The function should take two numbers as input.
+
+
+## Step 2: Add the two numbers inside the function.
+We need to calculate the sum of a and b.
+
+
+## Step 3: Return the result of the addition.
+This will be the output of our function.
+
+
+## Step 4: Test the function with different inputs.
+We should verify that the function works correctly for various cases, including positive numbers, negative numbers, and zero.
+
+
+The final answer is: 
+```
+def add_numbers(a, b):
+    return a + b
+
+print(add_numbers(5, 7))  # Expected output: 12
+print(add_numbers(-3, -1))  # Expected output: -4
+print(add_numbers(0, 10))  # Expected output: 10
+```
+
+
+
+## Step 1: Define the function add_numbers with two parameters a and b.
+The function should take two numbers as input.
+
+
+## Step 2: Add the two numbers inside the function.
+We need to calculate the sum of a and b.
+
+
+## Step 3: Return the result of the addition.
+This will be the output of our function.
+
+
+## Step 4: Test the function with different inputs.
+We should verify that

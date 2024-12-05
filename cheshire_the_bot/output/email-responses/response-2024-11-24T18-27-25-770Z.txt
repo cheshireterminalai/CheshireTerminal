@@ -1,0 +1,19 @@
+
+Original Email:
+From: test@example.com
+Subject: Test Subject
+Content: Hello, this is a test email to verify the local LLM integration. Please respond with a brief acknowledgment.
+
+Generated Response:
+Here's a professional email response:
+
+Subject: Re: Test Subject
+
+Dear [Sender's Name],
+
+Thank you for sending this test email to our system. We have received it successfully and are verifying the integration with our Local Language Model (LLM). Our team is working on integrating the LLM and we will be in touch soon.
+
+Best regards,
+[Your Name]
+Email Assistant
+[Your Company/Organization]

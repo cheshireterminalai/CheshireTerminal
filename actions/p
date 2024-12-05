@@ -1,0 +1,50 @@
+const express = require('express');
+const { Connection, PublicKey, Keypair, Transaction, SystemProgram } = require('@solana/web3.js');
+const { Buffer } = require('buffer');
+
+const app = express();
+app.use(express.json());
+
+// Solana connection
+const connection = new Connection("http://127.0.0.1:8899", 'confirmed');
+
+// Custom Program ID
+const programId = new PublicKey("YourProgramPublicKeyHere");
+
+// Endpoint: Send data to the Solana program
+app.post('/program/send-data', async (req, res) => {
+  const { senderSecretKey, data } = req.body;
+
+  try {
+    // Load the sender's keypair
+    const senderKeypair = Keypair.fromSecretKey(Uint8Array.from(senderSecretKey));
+
+    // Create a transaction with a custom instruction
+    const transaction = new Transaction().add({
+      keys: [{ pubkey: senderKeypair.publicKey, isSigner: true, isWritable: true }],
+      programId,
+      data: Buffer.from(data, 'utf-8'), // Convert the input data to bytes
+    });
+
+    // Send the transaction
+    const signature = await connection.sendTransaction(transaction, [senderKeypair]);
+    await connection.confirmTransaction(signature);
+
+    res.json({ status: 'success', signature });
+  } catch (error) {
+    console.error("Error interacting with the program:", error);
+    res.status(500).send('Failed to interact with the program');
+  }
+});
+
+// Endpoint: Fetch data from the Solana program
+app.get('/program/get-data/:account', async (req, res) => {
+  const { account } = req.params;
+
+  try {
+    const accountPublicKey = new PublicKey(account);
+
+    // Fetch account data
+    const accountInfo = await connection.getAccountInfo(accountPublicKey);
+    if (!accountInfo) {
+      return res.status(404).send('Account not

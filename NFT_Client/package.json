@@ -1,0 +1,16 @@
+{
+  "name": "autonomous-website",
+  "version": "1.0.0",
+  "description": "Autonomous website with AI agent and AstraDB integration",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@datastax/astra-db-ts": "^0.1.4",
+    "@solana/web3.js": "^1.87.6",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  }
+}

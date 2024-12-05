@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: nft_postgres
+    environment:
+      POSTGRES_USER: cheshire
+      POSTGRES_PASSWORD: chesh
+      POSTGRES_DB: cheshireterminal
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cheshire -d cheshireterminal"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

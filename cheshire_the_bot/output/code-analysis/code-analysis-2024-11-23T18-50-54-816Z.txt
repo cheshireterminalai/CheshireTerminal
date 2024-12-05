@@ -1,0 +1,31 @@
+Input:
+
+function fibonacci(n) {
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+
+Output:
+The provided JavaScript function is a recursive implementation of the Fibonacci sequence. However, it has a significant performance issue because it recalculates the same Fibonacci numbers multiple times. This results in an exponential time complexity, which is not efficient for larger inputs.
+
+To improve the performance, we can use a technique called "memoization," which involves storing the Fibonacci numbers that have already been calculated in an array or object. This way, we can avoid redundant calculations and achieve a linear time complexity.
+
+Here's the improved version of the code using memoization:
+
+```javascript
+function fibonacci(n, memo = {}) {
+  if (n <= 1) return n;
+
+  if (memo[n]) {
+    return memo[n];
+  }
+
+  memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo);
+  return memo[n];
+}
+```
+
+In this improved version, we added an additional parameter `memo` to the function, which is an object that will store the calculated Fibonacci numbers. If the Fibonacci number for a given `n` is already present in the `memo` object, we return it directly instead of recalculating it.
+
+This way, the time complexity of the function is reduced to O(n), making it more efficient for larger inputs.

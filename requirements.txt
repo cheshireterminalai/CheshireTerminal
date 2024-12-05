@@ -1,0 +1,7 @@
+torch
+diffusers
+transformers
+flask
+pillow
+accelerate
+safetensors

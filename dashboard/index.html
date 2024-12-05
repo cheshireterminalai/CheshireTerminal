@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheshire Terminal</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .elevenlabs-widget-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-bg" id="matrixBg"></div>
+    
+    <div class="header-image-container">
+        <div class="circle-frame"></div>
+        <img src="https://res.cloudinary.com/do5z0jxol/image/upload/v1732565136/My%20Brand/https___replicate.delivery_xezq_xWuO38pdsHL0BJVadHgoTZLY3kR6WjrKQ27ftncQEcxfLgwTA_out-0_jxlxuz.png" alt="Cheshire Cat" class="header-image">
+    </div>
+    
+    <div class="terminal">
+        <div class="terminal-header">
+            Welcome to the Cheshire Terminal Command Line Interface
+        </div>
+        
+        <div class="status">
+            <div class="status-row">
+                <span>Cheshire Terminal v4.2.0</span>
+                <div class="mode-toggle">
+                    <label class="switch">
+                        <input type="checkbox" id="modeToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <span id="modeLabel">Full Mode</span>
+                </div>
+            </div>
+            <div class="status-row">
+                <span id="connectionStatus">Connecting...</span>
+            </div>
+        </div>
+
+        <div class="menu" id="mainMenu">
+            <div class="menu-item" data-command="1">1. Conjure NFTs (Single or Batch)</div>
+            <div class="menu-item" data-command="2">2. Find an NFT by its magical address</div>
+            <div class="menu-item" data-command="3">3. View your collection of curiosities</div>
+            <div class="menu-item" data-command="4">4. Toggle NFT visibility (mint status)</div>
+            <div class="menu-item" data-command="5">5. Chat with the Cheshire Cat</div>
+            <div class="menu-item" data-command="6">6. Ask Coding Questions</div>
+            <div class="menu-item" data-command="7">7. Analyze Solana Code</div>
+            <div class="menu-item" data-command="8">8. Generate Solana Contract</div>
+            <div class="menu-item" data-command="9">9. Research Solana Tokens</div>
+            <div class="menu-item" data-command="10">10. Analyze Charts</div>
+            <div class="menu-item" data-command="11">11. Vanish into thin air (Exit)</div>
+        </div>
+
+        <div id="generateForm" class="form-container">
+            <div class="form-field">
+                <label>How many NFTs shall we conjure? (1-100):</label>
+                <input type="number" id="nftAmount" min="1" max="100" value="1">
+            </div>
+            <div class="form-field">
+                <label>Describe your vision (prompt):</label>
+                <input type="text" id="nftPrompt" required>
+            </div>
+            <div class="form-field">
+                <label>What style shall we use?</label>
+                <input type="text" id="nftStyle" placeholder="wonderland">
+            </div>
+            <div class="form-field">
+                <label>Name a special trait (optional):</label>
+                <input type="text" id="traitName">
+            </div>
+            <div class="form-field">
+                <label>Trait value:</label>
+                <input type="text" id="traitValue">
+            </div>
+            <div class="menu-item" onclick="generateNFT()">Generate</div>
+        </div>
+
+        <div id="chatContainer" class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="system-message">🐱 The Cheshire Cat materializes, ready for a chat...</div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Type your message...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+
+        <div id="codingContainer" class="coding-container">
+            <div class="chat-messages" id="codingMessages">
+                <div class="system-message">🐱 The Cheshire Cat dons a developer hat, ready to assist with code...</div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="codingInput" placeholder="Ask your coding question...">
+                <button onclick="sendCodingQuestion()">Ask</button>
+            </div>
+        </div>
+
+        <div id="analysisContainer" class="analysis-container">
+            <div class="chat-messages" id="analysisMessages">
+                <div class="system-message">🐱 The Cheshire Cat puts on spectacles, ready to analyze Solana code...</div>
+            </div>
+            <div class="chat-input">
+                <textarea id="analysisInput" placeholder="Paste your Solana code here for analysis..." rows="10"></textarea>
+                <button onclick="analyzeCode()">Analyze</button>
+            </div>
+        </div>
+
+        <div id="contractContainer" class="contract-container">
+            <div class="chat-messages" id="contractMessages">
+                <div class="system-message">🐱 The Cheshire Cat pulls out a quill, ready to write Solana contracts...</div>
+            </div>
+            <div class="chat-input">
+                <textarea id="contractInput" placeholder="Describe your desired Solana program or SPL token..." rows="10"></textarea>
+                <button onclick="generateContract()">Generate</button>
+            </div>
+        </div>
+
+        <div id="tokenAnalysisContainer" class="token-analysis-container">
+            <div class="chat-messages" id="tokenMessages">
+                <div class="system-message">🐱 The Cheshire Cat of Wall Street materializes, ready to analyze tokens...</div>
+            </div>
+            <div class="token-input">
+                <input type="text" id="tokenAddressInput" placeholder="Enter Solana token address...">
+                <button onclick="analyzeToken()">Analyze</button>
+            </div>
+            <div id="tokenInfo" class="token-info" style="display: none;">
+                <div class="section-title">Token Information</div>
+                <div id="tokenInfoContent"></div>
+            </div>
+            <div id="tokenMetrics" class="token-metrics" style="display: none;">
+                <!-- Metrics cards will be added dynamically -->
+            </div>
+            <div id="tokenAnalysis" class="analysis-section" style="display: none;">
+                <div class="section-title">Cheshire's Analysis</div>
+                <div id="tokenAnalysisContent"></div>
+            </div>
+        </div>
+
+        <div id="chartAnalysisContainer" class="chart-analysis-container">
+            <div class="chat-messages" id="chartMessages">
+                <div class="system-message">🐱 The Cheshire Cat adjusts his monocle, ready to analyze charts...</div>
+            </div>
+            <div class="chart-input">
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="chartUpload" accept="image/*" style="display: none;">
+                    <div class="upload-prompt" onclick="document.getElementById('chartUpload').click()">
+                        <span>📊 Drop your chart here or click to upload</span>
+                    </div>
+                </div>
+                <div id="uploadedImage" class="uploaded-image" style="display: none;">
+                    <img id="chartPreview" src="" alt="Uploaded Chart">
+                    <button onclick="analyzeChart()">Analyze Chart</button>
+                </div>
+            </div>
+            <div id="chartAnalysis" class="analysis-section" style="display: none;">
+                <div class="section-title">Chart Analysis</div>
+                <div id="chartAnalysisContent"></div>
+            </div>
+        </div>
+
+        <div class="output" id="output"></div>
+
+        <div class="command-input">
+            <span class="prompt">&gt;</span>
+            <input type="text" id="commandInput" placeholder="Enter your choice (1-11)" autofocus>
+        </div>
+    </div>
+
+    <img src="https://guzlanuvzfgcekmupcrx.supabase.co/storage/v1/object/public/Art/dope.png" alt="Footer Image" class="footer-image">
+    
+    <div style="margin-top: 1rem; color: var(--primary-color);">Made Wif Love By 8 Bit</div>
+
+    <!-- ElevenLabs Conversational AI Widget -->
+    <div class="elevenlabs-widget-container">
+        <elevenlabs-convai agent-id="lwiJrJFJXhXCJTiYfQxV"></elevenlabs-convai>
+    </div>
+
+    <script>
+        function createMatrixRain() {
+            const matrixBg = document.getElementById('matrixBg');
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const fontSize = 20;
+            const columns = Math.floor(width / fontSize);
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            canvas.style.position = 'absolute';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            matrixBg.appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+            ctx.font = fontSize + 'px monospace';
+            
+            const drops = Array(columns).fill(1);
+            
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, width, height);
+                
+                ctx.fillStyle = '#0F0';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const char = String.fromCharCode(0x30A0 + Math.random() * 96);
+                    ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+                    
+                    if (drops[i] * fontSize > height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    
+                    drops[i]++;
+                }
+            }
+            
+            setInterval(draw, 33);
+        }
+
+        window.addEventListener('load', createMatrixRain);
+        
+        window.addEventListener('resize', () => {
+            const matrixBg = document.getElementById('matrixBg');
+            matrixBg.innerHTML = '';
+            createMatrixRain();
+        });
+    </script>
+    <script src="js/client.js"></script>
+    <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
+</body>
+</html>
